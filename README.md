@@ -1,5 +1,5 @@
 # monaco-editor for fresh (deno)
-> foked from [@monaco-editor/react](https://github.com/suren-atoyan/monaco-react)
+> forked from [@monaco-editor/react](https://github.com/suren-atoyan/monaco-react)
 
 Monaco Editor for Deno; use the monaco-editor in any fresh application.
 
