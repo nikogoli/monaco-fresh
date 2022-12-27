@@ -1,7 +1,6 @@
-// TODO: the whole content should be improved in the next version.
-
-import * as React from 'react';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+/// <reference path="https://esm.sh/monaco-editor@0.34.1/monaco.d.ts" />
+import { JSX } from "preact"
+import { MutableRef} from "preact/hooks"
 
 // default themes
 type Theme =
@@ -11,24 +10,37 @@ type Theme =
 // monaco
 export type Monaco = typeof monaco;
 
-// Editor
-export type OnMount = (
-  editor: monaco.editor.IStandaloneCodeEditor,
-  monaco: Monaco,
-) => void;
+export type CodeEditor = monaco.editor.IStandaloneCodeEditor
+export type CodeDiffEditor = monaco.editor.IStandaloneDiffEditor
 
-export type BeforeMount = (
-  monaco: Monaco,
-) => void;
+// Editor
+export type OnMount =(
+    (
+      editor: monaco.editor.IStandaloneCodeEditor,
+      monaco: Monaco,
+    ) => void
+  ) | (
+    () => void
+  )
+
+export type BeforeMount =(
+    ( monaco: Monaco ) => void
+  )|(
+    () => void
+  )
 
 export type OnChange = (
-  value: string | undefined,
-  ev: monaco.editor.IModelContentChangedEvent,
-) => void;
+    value: string | undefined,
+    ev: monaco.editor.IModelContentChangedEvent,
+  ) => void
 
 export type OnValidate = (
-  markers: monaco.editor.IMarker[],
-) => void;
+    (
+      markers: monaco.editor.IMarker[],
+    ) => void
+  ) | (
+    () => void
+  )
 
 export interface EditorProps {
   /**
@@ -82,7 +94,7 @@ export interface EditorProps {
    * The loading screen before the editor will be mounted
    * Defaults to 'loading...'
    */
-  loading?: React.ReactNode;
+  loading?: JSX.Element | string;
 
   /**
    * IStandaloneEditorConstructionOptions
@@ -126,13 +138,13 @@ export interface EditorProps {
   /**
    * Props applied to the wrapper element
    */
-  wrapperProps?: object;
+  wrapperProps?: Record<string, unknown>;
 
   /**
    * Signature: function(monaco: Monaco) => void
    * An event is emitted before the editor is mounted
    * It gets the monaco instance as a first argument
-   * Defaults to "noop"
+   * Defaults to "() => void"
    */
   beforeMount?: BeforeMount;
 
@@ -140,7 +152,7 @@ export interface EditorProps {
    * Signature: function(editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => void
    * An event is emitted when the editor is mounted
    * It gets the editor instance as a first argument and the monaco instance as a second
-   * Defaults to "noop"
+   * Defaults to "() => void"
    */
   onMount?: OnMount;
 
@@ -154,25 +166,31 @@ export interface EditorProps {
    * Signature: function(markers: monaco.editor.IMarker[]) => void
    * An event is emitted when the content of the current model is changed
    * and tthe current model markers are ready
-   * Defaults to "noop"
+   * Defaults to "() => void"
    */
   onValidate?: OnValidate;
 }
 
-declare const Editor: React.FC<EditorProps>;
 
-export default Editor;
 
 // Diff Editor
 
 export type DiffOnMount = (
-  editor: monaco.editor.IStandaloneDiffEditor,
-  monaco: Monaco,
-) => void;
+    (
+      editor: monaco.editor.IStandaloneDiffEditor,
+      monaco: Monaco,
+    ) => void
+  ) | (
+    () => void
+  )
 
 export type DiffBeforeMount = (
-  monaco: Monaco,
-) => void;
+  (
+    monaco: Monaco,
+  ) => void
+) | (
+  () => void
+)
 
 export interface DiffEditorProps {
   /**
@@ -238,7 +256,7 @@ export interface DiffEditorProps {
    * The loading screen before the editor will be mounted
    * Defaults to 'loading...'
    */
-  loading?: React.ReactNode;
+  loading?: JSX.Element | string;
 
   /**
    * IDiffEditorConstructionOptions
@@ -265,13 +283,13 @@ export interface DiffEditorProps {
   /**
    * Props applied to the wrapper element
    */
-  wrapperProps?: object;
+  wrapperProps?: Record<string, unknown>;
 
   /**
    * Signature: function(monaco: Monaco) => void
    * An event is emitted before the editor is mounted
    * It gets the monaco instance as a first argument
-   * Defaults to "noop"
+   * Defaults to "() => void"
    */
   beforeMount?: DiffBeforeMount;
 
@@ -279,19 +297,24 @@ export interface DiffEditorProps {
    * Signature: function(editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => void
    * An event is emitted when the editor is mounted
    * It gets the editor instance as a first argument and the monaco instance as a second
-   * Defaults to "noop"
+   * Defaults to "() => void"
    */
   onMount?: DiffOnMount;
 }
 
-declare const DiffEditor: React.FC<DiffEditorProps>;
 
-export { DiffEditor };
+// container
 
-// useMonaco
-declare const useMonaco: () => Monaco | null;
+export type ContainerProps = {
+  width: number | string,
+  height: number | string,
+  loading: JSX.Element | string,
+  isEditorReady: boolean,  
+  _ref?: MutableRef<HTMLDivElement|null>,
+  className?: string,
+  wrapperProps?: Record<string, unknown>,
+}
 
-export { useMonaco };
 
 // loader
 
@@ -307,11 +330,11 @@ declare namespace loader {
       vs?: string,
     },
     'vs/nls'?: {
-      availableLanguages?: object,
+      availableLanguages?: Record<string, unknown>,
     },
     monaco?: Monaco,
   }): void;
   function __getMonacoInstance(): Monaco | null;
 }
 
-export { loader };
+export type Loader = typeof loader

@@ -1,8 +1,7 @@
 /** @jsx h */
-import { JSX, h } from "preact"
-import { MutableRef } from "preact/hooks"
-
-import { Loading } from '../Loading/Loading.tsx';
+import { h } from "preact"
+import { Loading } from '../Loading/Loading.tsx'
+import { ContainerProps } from "../types.ts"
 
 
 const styles = {
@@ -15,16 +14,6 @@ const styles = {
   hide: { display: 'none' },
 }
 
-
-type ContainerProps = {
-  width: number | string,
-  height: number | string,
-  loading: JSX.Element | string,
-  isEditorReady: boolean,  
-  _ref?: MutableRef<HTMLDivElement>,
-  className?: string,
-  wrapperProps?: Record<string, unknown>,
-}
 
 // ** forwardref render functions do not support proptypes or defaultprops **
 // one of the reasons why we use a separate prop for passing ref instead of using forwardref
