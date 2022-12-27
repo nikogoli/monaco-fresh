@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'preact';
 
-function useUpdate(effect, deps, applyChanges = true) {
+export function useUpdate(effect, deps, applyChanges = true) {
   const isInitialMount = useRef(true);
 
   useEffect(
@@ -10,5 +10,3 @@ function useUpdate(effect, deps, applyChanges = true) {
     deps
   );
 }
-
-export default useUpdate;

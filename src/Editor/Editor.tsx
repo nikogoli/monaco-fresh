@@ -1,14 +1,48 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import loader from '@monaco-editor/loader';
+/** @jsx h */
+/// <reference path="https://esm.sh/monaco-editor@0.34.1/monaco.d.ts" />
 
-import MonacoContainer from '../MonacoContainer';
-import useMount from '../hooks/useMount';
-import useUpdate from '../hooks/useUpdate';
+import { JSX, h } from "preact"
+import { useState, useEffect, useRef, useCallback } from 'preact/hooks'
+import loader from 'https://esm.sh/@monaco-editor/loader@1.3.2'
+//import * as Mona from "https://esm.sh/monaco-editor@0.34.1"
+
+import { MonacoContainer } from '../MonacoContainer/MonacoContainer.tsx';
+import { useUpdate } from '../hooks/useUpdate.ts';
 import usePrevious from '../hooks/usePrevious';
-import { noop, getOrCreateModel, isUndefined } from '../utils';
+import { getOrCreateModel } from '../utils.ts';
+
+
+type Monaco = typeof monaco
+type Editor = monaco.editor.IEditor
 
 const viewStates = new Map();
+
+type EditorProps = {
+  defaultValue: string,
+  defaultPath: string,
+  defaultLanguage: string,
+  value: string,
+  language: string,
+  path: string,
+  /* === */
+  theme: string,
+  line: number,
+  loading: JSX.Element | string,
+  options: Record<string, unknown>,
+  overrideServices: Record<string, unknown>,
+  saveViewState: boolean,
+  keepCurrentModel: boolean,
+  /* === */
+  width: number | string,
+  height: number | string,
+  className: string,
+  wrapperProps: Record<string, unknown>,
+  /* === */
+  beforeMount: ()=>void,
+  onMount: ()=>void,
+  onChange: ()=>void,
+  onValidate: ()=>void,
+}
 
 function Editor({
   defaultValue,
@@ -35,11 +69,11 @@ function Editor({
   onMount,
   onChange,
   onValidate,
-}) {
+}:EditorProps) {
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [isMonacoMounting, setIsMonacoMounting] = useState(true);
-  const monacoRef = useRef(null);
-  const editorRef = useRef(null);
+  const monacoRef = useRef<Monaco|null>(null);
+  const editorRef = useRef<Editor|null>(null);
   const containerRef = useRef(null);
   const onMountRef = useRef(onMount);
   const beforeMountRef = useRef(beforeMount);
@@ -48,16 +82,17 @@ function Editor({
   const previousPath = usePrevious(path);
   const preventCreation = useRef(false);
 
-  useMount(() => {
-    const cancelable = loader.init();
+  // after mouted 
+  useEffect(() => {
+    const cancelable = loader.init()
 
-    cancelable
-      .then(monaco => ((monacoRef.current = monaco) && setIsMonacoMounting(false)))
-      .catch(error => error?.type !== 'cancelation' &&
-        console.error('Monaco initialization: error:', error));
+    cancelable.then((monaco:Monaco) => ((monacoRef.current = monaco) && setIsMonacoMounting(false)))
+              .catch(error => error?.type !== 'cancelation' &&
+                console.error('Monaco initialization: error:', error)
+              )
 
     return () => editorRef.current ? disposeEditor() : cancelable.cancel();
-  });
+  }, []);
 
   useUpdate(() => {
     const model = getOrCreateModel(
@@ -67,7 +102,7 @@ function Editor({
       path,
     );
 
-    if (model !== editorRef.current.getModel()) {
+    if (editorRef.current && model !== editorRef.current.getModel()) {
       saveViewState && viewStates.set(previousPath, editorRef.current.saveViewState());
       editorRef.current.setModel(model);
       saveViewState && editorRef.current.restoreViewState(viewStates.get(path));
@@ -220,32 +255,7 @@ function Editor({
   );
 }
 
-Editor.propTypes = {
-  defaultValue: PropTypes.string,
-  defaultPath: PropTypes.string,
-  defaultLanguage: PropTypes.string,
-  value: PropTypes.string,
-  language: PropTypes.string,
-  path: PropTypes.string,
-  /* === */
-  theme: PropTypes.string,
-  line: PropTypes.number,
-  loading: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-  options: PropTypes.object,
-  overrideServices: PropTypes.object,
-  saveViewState: PropTypes.bool,
-  keepCurrentModel: PropTypes.bool,
-  /* === */
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  className: PropTypes.string,
-  wrapperProps: PropTypes.object,
-  /* === */
-  beforeMount: PropTypes.func,
-  onMount: PropTypes.func,
-  onChange: PropTypes.func,
-  onValidate: PropTypes.func,
-};
+
 
 Editor.defaultProps = {
   theme: 'light',
