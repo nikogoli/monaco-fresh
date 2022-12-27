@@ -5,7 +5,7 @@ Monaco Editor for Deno; use the monaco-editor in any fresh application.
 
 #### Usage
 Just import components in `YourFreshProject/islands/xxx.tsx`.
-```ts
+```tsx
 import { Editor } from "https://pax.deno.dev/nikogoli/monaco-fresh/src/mod.ts"
 
 export default function Monaco() {
