@@ -1,7 +1,8 @@
 //import loader from 'https://esm.sh/@monaco-editor/loader@1.3.2'
 import { Loader } from "./types.ts"
-/** @ts-ignore */
-const loader =  await import('https://esm.sh/@monaco-editor/loader@1.3.2') as Loader
+
+const { default:lod } = await import('https://esm.sh/@monaco-editor/loader@1.3.2')
+const loader: Loader = lod
 
 import { DiffEditor } from './DiffEditor/DiffEditor.tsx'
 import { Editor } from './Editor/Editor.tsx'

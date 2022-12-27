@@ -1,3 +1,4 @@
+/** @jsxRuntime classic */
 /** @jsx h */
 import { h } from "preact"
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks'

@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'preact';
+import { useEffect, useRef } from 'preact/hooks'
 
-export function useUpdate(effect, deps, applyChanges = true) {
+export function useUpdate(effect:()=>void, deps:Array<unknown>, applyChanges = true) {
   const isInitialMount = useRef(true);
 
   useEffect(
