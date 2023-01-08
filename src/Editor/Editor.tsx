@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx h */
-import { h } from "preact"
-import { useState, useEffect, useRef, useCallback } from 'preact/hooks'
+import { h } from "https://esm.sh/preact@10.11.0"
+import { useState, useEffect, useRef, useCallback } from 'https://esm.sh/preact@10.11.0/hooks'
 import { loader } from '../mod.ts'
 
 import { MonacoContainer } from '../MonacoContainer/MonacoContainer.tsx'

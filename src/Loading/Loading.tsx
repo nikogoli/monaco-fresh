@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx h */
-import { JSX, h } from "preact"
+import { JSX, h } from "https://esm.sh/preact@10.11.0"
 
 const loadingStyles = {
   display: 'flex',
