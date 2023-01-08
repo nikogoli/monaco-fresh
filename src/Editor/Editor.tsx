@@ -213,6 +213,21 @@ export function Editor({
     editorRef.current!.dispose();
   }
 
+  
+  // On rare occasions, CSS Class "cursor" is not applied to the cursor's Element, so manually set its style.
+  useEffect(() => {
+    const elems = document.getElementsByClassName("monaco-mouse-cursor-text")
+    if (elems.length >= 2){
+      const cursor_elem = elems[1] as HTMLDivElement
+      if (Array.from(cursor_elem.classList).includes("cursor") == false){
+        cursor_elem.style.backgroundColor = "black"
+        cursor_elem.style.borderColor = "black"
+        cursor_elem.style.position = "absolute"
+      }
+    }
+  }, [isEditorReady])
+
+
   return (
     <MonacoContainer
       width={width!}
