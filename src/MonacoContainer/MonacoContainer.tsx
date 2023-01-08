@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx h */
-import { h } from "https://esm.sh/preact@10.11.0"
+import { h } from "https://esm.sh/preact@10.10.6"
 import { Loading } from '../Loading/Loading.tsx'
 import { ContainerProps } from "../types.ts"
 

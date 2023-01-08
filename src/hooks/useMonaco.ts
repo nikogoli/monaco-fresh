@@ -1,4 +1,4 @@
-import { useState } from 'https://esm.sh/preact@10.11.0/hooks'
+import { useState } from 'https://esm.sh/preact@10.10.6/hooks'
 import { loader } from '../mod.ts'
 
 import { useMount } from './useMount.ts'

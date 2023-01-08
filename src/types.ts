@@ -1,6 +1,6 @@
 /// <reference path="https://esm.sh/monaco-editor@0.34.1/monaco.d.ts" />
-import { JSX } from "https://esm.sh/preact@10.11.0"
-import { MutableRef} from "https://esm.sh/preact@10.11.0/hooks"
+import { JSX } from "https://esm.sh/preact@10.10.6"
+import { MutableRef} from "https://esm.sh/preact@10.10.6/hooks"
 
 // default themes
 type Theme =

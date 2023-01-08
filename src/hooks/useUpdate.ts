@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'https://esm.sh/preact@10.11.0/hooks'
+import { useEffect, useRef } from 'https://esm.sh/preact@10.10.6/hooks'
 
 export function useUpdate(effect:()=>void, deps:Array<unknown>, applyChanges = true) {
   const isInitialMount = useRef(true);
